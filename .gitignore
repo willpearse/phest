@@ -1,0 +1,5 @@
+.Rhistory
+.DS_Store
+.Rapp.history
+Makefile
+.sandbox.R

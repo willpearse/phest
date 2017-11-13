@@ -14,5 +14,5 @@ This contains an implementation of the new(ish) method outlined in
 [Pearse, W. D., Davis, C. C., Inouye, D. W., Primack, R. B., & Davies,
 T. J. (2017). A statistical estimator for determining the limits of
 contemporary and historic phenology. Nature Ecology & Evolution,
-1.](https://www.nature.com/articles/s41559-017-0350-0). You can find
+1](https://www.nature.com/articles/s41559-017-0350-0). You can find
 the details of this in the package's help under `?weibull`.

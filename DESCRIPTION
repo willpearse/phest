@@ -1,7 +1,7 @@
 Package: phest
 Type: Package
 Title: What the package does (short line)
-Version: 1.0
+Version: 1.0-0
 Date: 2017-11-13
 Author: William D. Pearse, Charles C. Davis, David W. Inouye, Richard
     B. Primack, and T. Jonathan Davies.

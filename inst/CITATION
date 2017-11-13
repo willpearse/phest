@@ -1,0 +1,9 @@
+citEntry(entry="Article",
+         title = "A statistical estimator for determining the limits of contemporary and historic phenology",
+         author = personList(as.person("W.D. Pearse"), as.person("C.C. Davis"), as.person("D.W. Inouye"), as.person("R.B. Primack"), as.person("T.J. Davies")),
+         journal = "Nature Ecology & Evolution",
+         year="2017",
+         volume="1",
+         doi = "10.1038/s41559-017-0350-0",
+         textVersion = "Pearse, W. D., Davis, C. C., Inouye, D. W., Primack, R. B., & Davies, T. J. (2017). A statistical estimator for determining the limits of contemporary and historic phenology. Nature Ecology & Evolution, 1. DOI: 10.1038/s41559-017-0350-0"
+         )
