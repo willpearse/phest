@@ -1,0 +1,13 @@
+Package: phest
+Type: Package
+Title: What the package does (short line)
+Version: 1.0
+Date: 2017-11-13
+Author: William D. Pearse, Charles C. Davis, David W. Inouye, Richard
+    B. Primack, and T. Jonathan Davies.
+Maintainer: William D. Pearse <will.pearse@usu.edu>
+Description: Calculates estimates of phenological timing from
+    observation data. Implements a new method outlined in Pearse
+    (2017), as well some more standard methods for completeness.
+License: GPL-3
+RoxygenNote: 6.0.1
