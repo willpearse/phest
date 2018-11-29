@@ -11,3 +11,5 @@ Description: Calculates estimates of phenological timing from
     (2017), as well some more standard methods for completeness.
 License: GPL-3
 RoxygenNote: 6.0.1
+Suggests:
+    testthat (>= 2.0.0)

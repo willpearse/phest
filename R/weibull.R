@@ -70,16 +70,16 @@ weib.limit <- function(x, k=NULL, upper=FALSE, alpha=0.05){
         inv <- function(x,y) (gamma(2*v+y) * gamma(v+x)) / (gamma(v+y) * gamma(x))
         return(ifelse(j <= i, std(i,j), inv(i,j)))
     }
-    weights <- function(x){
+    weights <- function(x, upper){
         k <- length(x)
-        v <- v.hat(x)
+        v <- v.hat(x, upper)
         lam.mat <- outer(seq_along(x), seq_along(x), lam, v)
         e <- matrix(rep(1,k), ncol=1)
         alpha <- as.vector(solve(t(e) %*% solve(lam.mat) %*% e)) * as.vector(solve(lam.mat) %*% e)
         return(alpha)
     }
-    v.hat <- function(x){
-        x <- sort(x, FALSE)
+    v.hat <- function(x, upper){
+        x <- sort(x, decreasing=upper)
         if(x[1] == x[2]){
             warning("Repeated earliest measurements; applying correction")
             x <- c(x[1], x[x != x[1]])
@@ -92,21 +92,21 @@ weib.limit <- function(x, k=NULL, upper=FALSE, alpha=0.05){
         k <- length(x)
         return((1/(k-1)) * sum(log((x[1] - x[k]) / (x[1] - x[seq(2,k-1)]))))
     }
-    Sl <- function(x,k,alpha) (-log(1 - alpha/2)/k)^(-v.hat(x))
-    Su <- function(x,k,alpha) (-log(alpha/2)/k)^(-v.hat(x))
+    Sl <- function(x,k,alpha) (-log(1 - alpha/2)/k)^(-v.hat(x,upper))
+    Su <- function(x,k,alpha) (-log(alpha/2)/k)^(-v.hat(x,upper))
     
     # Calculate the estimate
     k <- k.check(x, k)
-    x <- sort(x, FALSE, decreasing=upper)
+    x <- sort(x, decreasing=upper)
     x <- x[seq_len(k)]
-    theta <- tryCatch(sum(x * weights(x)), error=function(x) NA)
+    theta <- tryCatch(sum(x * weights(x,upper)), error=function(x) NA)
 
     # Calculate the CIs
-    upper <- tryCatch(x[1] + ((x[1]-x[k]) / (Sl(x,k,alpha) -1)), error=function(x) NA)
-    lower <- tryCatch(x[1] + ((x[1] - x[k]) / (Su(x,k,alpha)-1)), error=function(x) NA)
+    upper.ci <- tryCatch(x[1] + ((x[1]-x[k]) / (Sl(x,k,alpha) -1)), error=function(x) NA)
+    lower.ci <- tryCatch(x[1] + ((x[1] - x[k]) / (Su(x,k,alpha)-1)), error=function(x) NA)
 
     # Return
-    return(setNames(c(theta, lower, upper), c("estimate", "conf-interval", "conf-interval")))
+    return(setNames(c(theta, lower.ci, upper.ci), c("estimate", "conf-interval", "conf-interval")))
 }
 
 #' @export
@@ -131,16 +131,16 @@ weib.limit.bootstrap <- function(x, k=NULL, n=1000, max.iter=10, upper=FALSE){
         inv <- function(x,y) (gamma(2*v+y) * gamma(v+x)) / (gamma(v+y) * gamma(x))
         return(ifelse(j <= i, std(i,j), inv(i,j)))
     }
-    weights <- function(x){
+    weights <- function(x, upper){
         k <- length(x)
-        v <- v.hat(x)
+        v <- v.hat(x, upper)
         lam.mat <- outer(seq_along(x), seq_along(x), lam, v)
         e <- matrix(rep(1,k), ncol=1)
         alpha <- as.vector(solve(t(e) %*% solve(lam.mat) %*% e)) * as.vector(solve(lam.mat) %*% e)
         return(alpha)
     }
-    v.hat <- function(x){
-        x <- sort(x, FALSE)
+    v.hat <- function(x, upper){
+        x <- sort(x, upper)
         if(x[1] == x[2]){
             warning("Repeated earliest measurements; applying correction")
             x <- c(x[1], x[x != x[1]])
@@ -156,15 +156,15 @@ weib.limit.bootstrap <- function(x, k=NULL, n=1000, max.iter=10, upper=FALSE){
 
     theta.hat <- function(x, k=NULL, upper=FALSE){
         k <- k.check(x, k)
-        x <- sort(x, FALSE, decreasing=upper)
+        x <- sort(x, decreasing=upper)
         x <- x[seq_len(k)]
-        tryCatch(sum(x * weights(x)), error=function(x) NA)
+        tryCatch(sum(x * weights(x,upper)), error=function(x) NA)
     }
 
     #Estimate parameters
     k <- k.check(x, k)
     theta <- theta.hat(x, k=k, upper=upper)
-    shape <- v.hat(x)
+    shape <- v.hat(x, upper)
     if(is.na(theta))
         return(c(NA,NA))
 
