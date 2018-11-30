@@ -50,6 +50,18 @@ bootstrapped values, and (personally) I would advise you to write
 your own function to make sure you're comfortable with what's going
 on.
 }
+\note{
+Smith (1987) discusses how there is a trade-off between
+    choosing a value of \code{k} that is sufficiently large so as
+    to detect signal, but not so large as to introduce signal from
+    the bulk (centre) of the distribution. When there is evidence
+    that the confidence intervals are being influenced by the bulk
+    of the distribution this function returns \code{NA} confidence
+    intervals and issues a warning. The estimate of the limit
+    itself seems unaffected, but as with any statistical method you
+    should inspect your estimates to ensure they make sense. This
+    is a rare occurrence, WDP should add!
+}
 \examples{
 # Gather some observations of when flowers were in bloom
 observations <- 5:15
@@ -70,4 +82,6 @@ R. B., & Davies, T. J. (2017). A statistical estimator for
 determining the limits of contemporary and historic
 phenology. Nature Ecology & Evolution, 1. DOI:
 10.1038/s41559-017-0350-0
+Smith, R. L. (1987). Estimating tails of probability
+distributions. The annals of Statistics, 1174-1207.
 }

@@ -12,7 +12,7 @@
 #' be interpreted with caution. There are many ways of calculating
 #' bootstrapped values, and (personally) I would advise you to write
 #' your own function to make sure you're comfortable with what's going
-#' on. 
+#' on.
 #' @param x vector of dates/times of observations, given as numbers
 #' @param k how many entries in 'x' will be used to calculate the
 #'     estimate. See 'Methods' in Pearse et al. (2017) for an
@@ -30,6 +30,16 @@
 #'     such a case occurs, this parameter sets how many times the
 #'     function will try the bootstrapping again until the problem
 #'     doesn't occur.
+#' @note Smith (1987) discusses how there is a trade-off between
+#'     choosing a value of \code{k} that is sufficiently large so as
+#'     to detect signal, but not so large as to introduce signal from
+#'     the bulk (centre) of the distribution. When there is evidence
+#'     that the confidence intervals are being influenced by the bulk
+#'     of the distribution this function returns \code{NA} confidence
+#'     intervals and issues a warning. The estimate of the limit
+#'     itself seems unaffected, but as with any statistical method you
+#'     should inspect your estimates to ensure they make sense. This
+#'     is a rare occurrence, WDP should add!
 #' @examples
 #' # Gather some observations of when flowers were in bloom
 #' observations <- 5:15
@@ -48,6 +58,8 @@
 #' determining the limits of contemporary and historic
 #' phenology. Nature Ecology & Evolution, 1. DOI:
 #' 10.1038/s41559-017-0350-0
+#' Smith, R. L. (1987). Estimating tails of probability
+#' distributions. The annals of Statistics, 1174-1207.
 #' @rdname weibull
 #' @importFrom stats setNames
 #' @export
@@ -102,11 +114,18 @@ weib.limit <- function(x, k=NULL, upper=FALSE, alpha=0.05){
     theta <- tryCatch(sum(x * weights(x,upper)), error=function(x) NA)
 
     # Calculate the CIs
-    upper.ci <- tryCatch(x[1] + ((x[1]-x[k]) / (Sl(x,k,alpha) -1)), error=function(x) NA)
-    lower.ci <- tryCatch(x[1] + ((x[1] - x[k]) / (Su(x,k,alpha)-1)), error=function(x) NA)
+    ci.one <- tryCatch(x[1] + ((x[1]-x[k]) / (Sl(x,k,alpha) -1)), error=function(x) NA)
+    ci.two <- tryCatch(x[1] + ((x[1] - x[k]) / (Su(x,k,alpha)-1)), error=function(x) NA)
+    ci <- range(ci.one, ci.two)
+
+    # Check for tail vs. centre of distribution issues
+    if(theta < ci[1] | theta > ci[2]){
+        warning("Confidence interval estimation problem; see notes")
+        ci <- rep(NA, 2)
+    }
 
     # Return
-    return(setNames(c(theta, lower.ci, upper.ci), c("estimate", "conf-interval", "conf-interval")))
+    return(setNames(c(theta, ci), c("estimate", "lower-ci", "upper-ci")))
 }
 
 #' @export
