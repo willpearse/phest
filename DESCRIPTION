@@ -4,7 +4,7 @@ Title: Calculate PHEnological ESTimates
 Version: 1.0-0
 Authors@R: c(person("William D.", "Pearse", email = "will.pearse@usu.edu", role = c("aut", "cre"), comment=c(ORCID="0000-0002-6241-3164")),
     person("Michael", "Belitz", email = "mbelitz@ufl.edu", role = "ctb"),
-    person("Michael", "Stemkovski", email = "m.stemkovski@gmail.com", role = "ctb", comment=c(ORCID="0000-0002-9854-887X"))
+    person("Michael", "Stemkovski", email = "m.stemkovski@gmail.com", role = "ctb", comment=c(ORCID="0000-0002-9854-887X")),
     person("T. Jonathan", "Davies", email = "j.davies@ubc.ca", role = "aut", comment=c(ORCID="0000-0003-3318-5948")))
 Maintainer: William D. Pearse <will.pearse@usu.edu>
 Description: Calculates estimates of phenological timing from

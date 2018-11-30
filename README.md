@@ -1,4 +1,4 @@
-phest - phenology estimation (in R) [![Build Status](https://travis-ci.org/willpearse/phest.svg?branch=master)](https://travis-ci.org/phest/phest)
+phest - phenology estimation (in R) [![Build Status](https://travis-ci.org/willpearse/phest.svg?branch=master)](https://travis-ci.org/willpearse/phest)
 ===============================================================
 Will Pearse (will.pearse@usu.edu)
 
