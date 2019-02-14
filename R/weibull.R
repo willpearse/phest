@@ -117,13 +117,17 @@ weib.limit <- function(x, k=NULL, upper=FALSE, alpha=0.05){
     ci.one <- tryCatch(x[1] + ((x[1]-x[k]) / (Sl(x,k,alpha) -1)), error=function(x) NA)
     ci.two <- tryCatch(x[1] + ((x[1] - x[k]) / (Su(x,k,alpha)-1)), error=function(x) NA)
     ci <- range(ci.one, ci.two)
-
-    # Check for tail vs. centre of distribution issues
-    if(theta < ci[1] | theta > ci[2]){
-        warning("Confidence interval estimation problem; see notes")
-        ci <- rep(NA, 2)
+    
+    # Could we estimate theta or its CI?
+    # - if so, check for sense, otherwise they're NA already
+    if(all(!is.na(c(theta,ci)))){
+        # Check for tail vs. centre of distribution issues
+        if(theta < ci[1] | theta > ci[2]){
+            warning("Confidence interval estimation problem; see notes")
+            ci <- rep(NA, 2)
+        }
     }
-
+    
     # Return
     return(setNames(c(theta, ci), c("estimate", "lower-ci", "upper-ci")))
 }
